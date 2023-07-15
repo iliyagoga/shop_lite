@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import {Route, Routes} from 'react-router-dom'
-import { authRoutes, publicRoutes } from "../routes";
+import { authRoutes, publicRoutes } from "../utils/routes";
 import {SHOP_ROUTE} from '../utils/consts';
 import { Context } from "..";
-import Auth from "../pages/Auth";
+import {Auth} from "../pages/Auth";
+import Shop from "../pages/Shop";
 export default function AppRouter(){
     const {user}= useContext(Context)
     return (<>
@@ -14,7 +15,7 @@ export default function AppRouter(){
             {publicRoutes.map(({path, Component})=>{
                return  <Route key={path} path={path} Component={Component}/>
             })}
-           <Route path='/*' element={<Auth/>}></Route>
+           <Route path='/*' element={<Shop/>}></Route>
 
         </Routes></>
     )

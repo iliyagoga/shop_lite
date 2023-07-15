@@ -4,6 +4,7 @@ require('dotenv').config()
 const jwt = require('jsonwebtoken')
 const { User, Basket } = require('../models/model')
 async function registration(req,res,next){
+    console.log(req)
     const {email,password}= req.body
     if(!email || !password){
         return next(ApiError.badRequest('Некорректный логин или пароль'))
@@ -40,6 +41,6 @@ async function login(req,res,next){
 }
 async function check(req,res,next){
 
-    return res.json(jwt.sign({id: candidate.id, email, role: candidate.role},process.env.SECRET_KEY, {expiresIn:'24h'}))
+    return res.json(jwt.sign({id: req.user.id, email, role: req.user.role},process.env.SECRET_KEY, {expiresIn:'24h'}))
 }
 module.exports = {registration, login, check}

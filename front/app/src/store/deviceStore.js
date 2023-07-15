@@ -7,10 +7,14 @@ export default class DeviceStore{
         ]
 
         this._brands=[
-            {id:1 , type:'Apple'},
-            { id:2, type: 'Samsung'}
+            {id:1 , name:'Apple'},
+            { id:2, name: 'Samsung'}
+        ]
+        this._devices=[	
+            {id: 2,	name:"12 pro max",price:	12000,  rating:	0,	img: "31b406ab-a007-4ed0-8a3d-97d6c45e9684.jpg",	TypeId:2, BrandId:	2}
         ]
         this._selectedType={}
+        this._selectedBrand={}
         makeAutoObservable(this)
     }
     setTypes(types){
@@ -25,16 +29,21 @@ export default class DeviceStore{
     setSelectedType(selectedType){
         this._selectedType=selectedType
     }
-    get Types(){
+    setSelectedBrand(selectedBrand){
+        this._selectedBrand=selectedBrand
+    }
+    get types(){
+        return this._types
+    }
+    get brands(){
         return this._brands
     }
-    get Brands(){
-        return this.brands
-    }
-    get Devices(){
+    get devices(){
         return this._devices
     }
-    get SelectedType(){
+    get selectedType(){
         return this._selectedType
     }
+    get selectedBrand(){
+        return this._selectedBrand    }
 }

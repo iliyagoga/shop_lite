@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Context.Provider value={{
         user: new UseStore(),
-        devices: new UseDevices(),
+        device: new UseDevices(),
     }}>
         <BrowserRouter> <App /></BrowserRouter>
     </Context.Provider>
