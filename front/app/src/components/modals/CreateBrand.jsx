@@ -1,10 +1,19 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Modal from "react-bootstrap/Modal";
-import {Form, Button} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
+import { createBrand } from '../../http/deviceAPI';
+import { Context } from '../..';
 
-
-const CreateType = ({show, onHide}) => {
-    const [value, setValue] = useState('')
+const CreateBrand = ({show, onHide}) => {
+    const {device}=useContext(Context)
+    const [value,setValue] = useState('')
+    const addBrand=()=>{
+        createBrand(value).then((data)=>{
+            setValue('')
+            onHide()
+            device.setBrands([...device.brands,data])
+        })
+    }
 
 
     return (
@@ -15,7 +24,7 @@ const CreateType = ({show, onHide}) => {
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Добавить тип
+                    Добавить бренд
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -23,16 +32,16 @@ const CreateType = ({show, onHide}) => {
                     <Form.Control
                         value={value}
                         onChange={e => setValue(e.target.value)}
-                        placeholder={"Введите название типа"}
+                        placeholder={"Введите название бренда"}
                     />
                 </Form>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="outline-danger" onClick={onHide}>Закрыть</Button>
-                <Button variant="outline-success" >Добавить</Button>
+                <Button variant="outline-success" onClick={addBrand}>Добавить</Button>
             </Modal.Footer>
         </Modal>
     );
 };
 
-export default CreateType;
+export default CreateBrand;

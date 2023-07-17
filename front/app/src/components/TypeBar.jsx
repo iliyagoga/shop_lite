@@ -6,7 +6,6 @@ import ListGroup from "react-bootstrap/ListGroup";
 
 const TypeBar = observer(() => {
     const {device} = useContext(Context)
-    console.log(device)
     return (
         <ListGroup className={'d-flex'}>
             {device.types.map(type =>
@@ -17,7 +16,7 @@ const TypeBar = observer(() => {
                     key={type.id}
                     
                 >
-                    {type.type}
+                    {type.name}
                 </ListGroup.Item>
             )}
         </ListGroup>

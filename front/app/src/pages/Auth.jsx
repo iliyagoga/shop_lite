@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import Container from "react-bootstrap/esm/Container";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Form from 'react-bootstrap/esm/Form'
 import Row from "react-bootstrap/Row";
 import Card from 'react-bootstrap/Card'
-import { LOGIN_ROUTE, REGISTRATION_ROUTE } from "../utils/consts";
+import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "../utils/consts";
 import Button from "react-bootstrap/esm/Button";
 import { observer } from "mobx-react-lite";
 import {login, registration} from "../http/userAPI";
@@ -16,16 +16,30 @@ export const Auth= observer(()=>{
     const isLogin = location.pathname === LOGIN_ROUTE
     const [email, setEmail]=useState('')
     const [pass,setPass] = useState('')
+    const [pass2,setPass2] = useState('')
+    const nav =useNavigate()
     const signIn= async (email,password)=>{
-        let data
-        if(isLogin){
-            data= await login(email,password)
+        try {
+            if(pass==pass2){
+                let data
+                if(isLogin){
+                    data= await login(email,password)
+                }
+                else{
+                    data= await registration(email,password)
+                }
+                user.setUser(data)
+                user.setIsAuth(true)
+                nav(SHOP_ROUTE)
+            }
+            else{
+                alert('Пароли не совпадают')
+            }
+            
+        } catch (error) {
+            alert(error.response.data.message)
         }
-        else{
-            data= await registration(email,password)
-        }
-        user.setUser(data)
-        user.setIsAuth(true)
+        
     }
  return ( <Container
     className="d-flex justify-content-center align-items-center"
@@ -37,16 +51,30 @@ export const Auth= observer(()=>{
             <Form.Control
                 className="mt-3"
                 value={email}
-                onChange={(e)=>{setEmail(e.target.value)}}
-                placeholder="Введите ваш email..."
+                onChange={(e)=>{
+                    setEmail(e.target.value)
+                }}
+                placeholder="Введите ваш логин"
             />
             <Form.Control
                 className="mt-3"
                 value={pass}
-                onChange={(e)=>{setPass(e.target.value)}}
-                placeholder="Введите ваш пароль..."
+                onChange={(e)=>{
+                    setPass(e.target.value)
+                    isLogin&&setPass2(e.target.value)
+                }}
+                placeholder="Введите ваш пароль"
                 type="password"
             />
+            {!isLogin&&<Form.Control
+                className="mt-3"
+                value={pass2}
+                onChange={(e)=>{
+                    setPass2(e.target.value)
+                }}
+                placeholder="Введите ваш пароль"
+                type="password"
+            />}
             <Row className="d-flex justify-content-between mt-3 pl-3 pr-3">
                 {isLogin ?
                     <div>

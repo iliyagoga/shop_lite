@@ -8,7 +8,6 @@ const Admin = () => {
     const [brandVisible, setBrandVisible] = useState(false)
     const [typeVisible, setTypeVisible] = useState(false)
     const [deviceVisible, setDeviceVisible] = useState(false)
-    console.log(config.REACTE_APP_API_URL)
     return (
         <Container className="d-flex flex-column">
             <Button

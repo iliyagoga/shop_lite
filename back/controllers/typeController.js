@@ -3,6 +3,7 @@ const ApiError = require('../error/ApiError')
 const { modelManager } = require('../db')
 async function create(req,res){
     const {name}= req.body
+    console.log(req.body)
     const type = await Type.create({name})
     return res.json(type)
 

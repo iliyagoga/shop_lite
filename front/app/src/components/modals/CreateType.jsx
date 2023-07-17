@@ -1,9 +1,20 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Modal from "react-bootstrap/Modal";
-import {Button, Form} from "react-bootstrap";
+import {Form, Button} from "react-bootstrap";
+import { createType } from '../../http/deviceAPI';
+import { Context } from '../..';
 
-const CreateBrand = ({show, onHide}) => {
-    const [value, setValue] = useState('')
+
+const CreateType = ({show, onHide}) => {
+    const {device}=useContext(Context)
+    const [value,setValue] = useState('')
+    const addType=()=>{
+        createType(value).then((data)=>{
+            setValue('')
+            onHide()
+            device.setTypes([...device.types,data])
+        })
+    }
 
 
     return (
@@ -28,10 +39,10 @@ const CreateBrand = ({show, onHide}) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="outline-danger" onClick={onHide}>Закрыть</Button>
-                <Button variant="outline-success" >Добавить</Button>
+                <Button variant="outline-success" onClick={addType}>Добавить</Button>
             </Modal.Footer>
         </Modal>
     );
 };
 
-export default CreateBrand;
+export default CreateType;

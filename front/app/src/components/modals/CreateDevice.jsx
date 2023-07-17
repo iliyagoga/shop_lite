@@ -4,6 +4,7 @@ import {Button, Dropdown, Form, Row, Col} from "react-bootstrap";
 import {Context} from "../../index";
 
 import {observer} from "mobx-react-lite";
+import { createDevice, fetchBrands, fetchTypes } from '../../http/deviceAPI';
 
 const CreateDevice = observer(({show, onHide}) => {
     const {device} = useContext(Context)
@@ -11,9 +12,10 @@ const CreateDevice = observer(({show, onHide}) => {
     const [price, setPrice] = useState(0)
     const [file, setFile] = useState(null)
     const [info, setInfo] = useState([])
-
-
-
+    if(device.types.length==0 || device.brands.length==0){
+            fetchTypes().then((res)=>{device.setTypes(res)})
+            fetchBrands().then((res)=>{device.setBrands(res)})
+    }
     const addInfo = () => {
         setInfo([...info, {title: '', description: '', number: Date.now()}])
     }
@@ -36,7 +38,7 @@ const CreateDevice = observer(({show, onHide}) => {
         formData.append('brandId', device.selectedBrand.id)
         formData.append('typeId', device.selectedType.id)
         formData.append('info', JSON.stringify(info))
-     
+        createDevice(formData).then(data=>onHide())
     }
 
     return (
@@ -66,7 +68,7 @@ const CreateDevice = observer(({show, onHide}) => {
                         </Dropdown.Menu>
                     </Dropdown>
                     <Dropdown className="mt-2 mb-2">
-                        <Dropdown.Toggle>{device.selectedBrand.name || "Выберите тип"}</Dropdown.Toggle>
+                        <Dropdown.Toggle>{device.selectedBrand.name || "Выберите бренд"}</Dropdown.Toggle>
                         <Dropdown.Menu>
                             {device.brands.map(brand =>
                                 <Dropdown.Item

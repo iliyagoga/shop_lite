@@ -15,6 +15,6 @@ export default class UseStore{
         return this._isAuth
     }
     get user(){
-        return this.user
+        return this._user
     }
 }

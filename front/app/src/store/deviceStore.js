@@ -1,20 +1,14 @@
 import {makeAutoObservable} from 'mobx'
 export default class DeviceStore{
     constructor(){
-        this._types=[
-            {id:1 , type:'Холодильники'},
-            { id:2, type: 'Смартфоны'}
-        ]
-
-        this._brands=[
-            {id:1 , name:'Apple'},
-            { id:2, name: 'Samsung'}
-        ]
-        this._devices=[	
-            {id: 2,	name:"12 pro max",price:	12000,  rating:	0,	img: "31b406ab-a007-4ed0-8a3d-97d6c45e9684.jpg",	TypeId:2, BrandId:	2}
-        ]
-        this._selectedType={}
-        this._selectedBrand={}
+        this._types=[]
+        this._brands=[]
+        this._devices=[]
+        this._selectedType=0
+        this._selectedBrand=0
+        this._page = 1
+        this._totalCount = 0
+        this._limit = 3
         makeAutoObservable(this)
     }
     setTypes(types){
@@ -27,11 +21,20 @@ export default class DeviceStore{
         this._devices=devices
     }
     setSelectedType(selectedType){
+        this.setPage(1)
         this._selectedType=selectedType
     }
     setSelectedBrand(selectedBrand){
+        this.setPage(1)
         this._selectedBrand=selectedBrand
     }
+    setPage(page) {
+        this._page = page
+    }
+    setTotalCount(count) {
+        this._totalCount = count
+    }
+
     get types(){
         return this._types
     }
@@ -45,5 +48,15 @@ export default class DeviceStore{
         return this._selectedType
     }
     get selectedBrand(){
-        return this._selectedBrand    }
+        return this._selectedBrand   
+    }
+    get totalCount() {
+        return this._totalCount
+    }
+    get page() {
+        return this._page
+    }
+    get limit() {
+        return this._limit
+    }
 }
