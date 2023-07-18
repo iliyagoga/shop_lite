@@ -10,6 +10,7 @@ import { Context } from '..';
 
 const BasketItem = ({device}) => {
     const {basket}=useContext(Context)
+    const nav=useNavigate()
     const remove=()=>{
         removeBasket(device.id).then(d=>{
             let copy= Object.assign(basket.devices)
@@ -25,7 +26,7 @@ const BasketItem = ({device}) => {
     const history = useNavigate()
     return (
         <Col md={3} className={"mt-3"} >
-            <Card style={{width: 150, cursor: 'pointer'}} border={"light"}>
+            <Card style={{width: 150, cursor: 'pointer'}}  onClick={()=>{nav(DEVICE_ROUTE + '/' + device.id)}}border={"light"}>
                 <Image width={150} height={150} src={config.REACTE_APP_API_URL +'/'+device.img}/>
                 <div className="text-black-50 mt-1 d-flex justify-content-between align-items-center">
                     <div>{device.Brand.name}</div>
