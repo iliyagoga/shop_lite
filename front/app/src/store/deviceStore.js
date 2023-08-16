@@ -5,7 +5,9 @@ export default class DeviceStore{
         this._brands=[]
         this._devices=[]
         this._selectedType=0
+        this._selectedTypeBuf=0
         this._selectedBrand=0
+        this._selectedBrandBuf=0
         this._page = 1
         this._totalCount = 0
         this._limit = 3
@@ -24,9 +26,15 @@ export default class DeviceStore{
         this.setPage(1)
         this._selectedType=selectedType
     }
+    setSelectedTypeBuf(selectedType){
+        this._selectedTypeBuf=selectedType
+    }
     setSelectedBrand(selectedBrand){
         this.setPage(1)
         this._selectedBrand=selectedBrand
+    }
+    setSelectedBrandBuf(selectedBrand){
+        this._selectedBrandBuf=selectedBrand
     }
     setPage(page) {
         this._page = page
@@ -47,8 +55,14 @@ export default class DeviceStore{
     get selectedType(){
         return this._selectedType
     }
+    get selectedTypeBuf(){
+        return this._selectedTypeBuf
+    }
     get selectedBrand(){
         return this._selectedBrand   
+    }
+    get selectedBrandBuf(){
+        return this._selectedBrandBuf   
     }
     get totalCount() {
         return this._totalCount

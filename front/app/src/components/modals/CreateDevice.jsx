@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import Modal from "react-bootstrap/Modal";
 import {Button, Dropdown, Form, Row, Col} from "react-bootstrap";
 import {Context} from "../../index";
-
+import img from '../../assets/no-image.jpg'
 import {observer} from "mobx-react-lite";
 import { createDevice, fetchBrands, fetchTypes } from '../../http/deviceAPI';
 
@@ -31,16 +31,36 @@ const CreateDevice = observer(({show, onHide}) => {
     }
 
     const addDevice = () => {
-        const formData = new FormData()
-        formData.append('name', name)
-        formData.append('price', `${price}`)
-        formData.append('img', file)
-        formData.append('brandId', device.selectedBrand.id)
-        formData.append('typeId', device.selectedType.id)
-        formData.append('info', JSON.stringify(info))
-        createDevice(formData).then(data=>onHide())
+        if(!device.selectedTypeBuf){
+            alert('Укажите тип устройства')
+        }
+        else{
+            if(!device.selectedBrandBuf){
+                alert('Укажите бренд устройства')
+            }
+            else{
+                if(!name){
+                    alert('Введите название устройства')
+                }
+                else{
+                    if(!price){
+                        alert('Введите цену устройства')
+                    }
+                    else{
+                        const formData = new FormData()
+                        formData.append('name', name)
+                        formData.append('price', `${price}`)
+                        formData.append('img', file?file:new File([], img))
+                        formData.append('brandId', device.selectedBrandBuf.id)
+                        formData.append('typeId', device.selectedTypeBuf.id)
+                        formData.append('info', info?JSON.stringify(info):JSON.stringify('Нет информации'))
+                        createDevice(formData).then(data=>{onHide();alert('Товар успешно добавлен')})
+                    }
+                }
+            }
+        }
+        
     }
-
     return (
         <Modal
             show={show}
@@ -55,11 +75,11 @@ const CreateDevice = observer(({show, onHide}) => {
             <Modal.Body>
                 <Form>
                     <Dropdown className="mt-2 mb-2">
-                        <Dropdown.Toggle>{device.selectedType.name || "Выберите тип"}</Dropdown.Toggle>
+                        <Dropdown.Toggle>{device.selectedTypeBuf.name || "Выберите тип"}</Dropdown.Toggle>
                         <Dropdown.Menu>
                             {device.types.map(type =>
                                 <Dropdown.Item
-                                    onClick={() => device.setSelectedType(type)}
+                                    onClick={() => device.setSelectedTypeBuf(type)}
                                     key={type.id}
                                 >
                                     {type.name}
@@ -68,11 +88,11 @@ const CreateDevice = observer(({show, onHide}) => {
                         </Dropdown.Menu>
                     </Dropdown>
                     <Dropdown className="mt-2 mb-2">
-                        <Dropdown.Toggle>{device.selectedBrand.name || "Выберите бренд"}</Dropdown.Toggle>
+                        <Dropdown.Toggle>{device.selectedBrandBuf.name || "Выберите бренд"}</Dropdown.Toggle>
                         <Dropdown.Menu>
                             {device.brands.map(brand =>
                                 <Dropdown.Item
-                                    onClick={() => device.setSelectedBrand(brand)}
+                                    onClick={() => device.setSelectedBrandBuf(brand)}
                                     key={brand.id}
                                 >
                                     {brand.name}
